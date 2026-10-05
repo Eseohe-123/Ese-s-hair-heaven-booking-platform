@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { formatNaira, type Hairstyle } from "@/data/content";
-import { toggleFavourite } from "@/app/account/actions";
 import { Stars } from "./Stars";
 import { StylePhoto } from "./StylePhoto";
 
@@ -52,16 +51,13 @@ export function StyleCard({ style }: { style: Hairstyle }) {
           >
             Request This Style
           </Link>
-          <form action={toggleFavourite}>
-            <input type="hidden" name="slug" value={style.slug} />
-            <button
-              type="submit"
-              aria-label={`Save ${style.name} to favourites`}
-              className="inline-flex items-center justify-center rounded-full border-2 border-blush-100 px-4 py-2.5 text-sm font-extrabold text-plum-700 transition-colors hover:border-blush-500"
-            >
-              Save
-            </button>
-          </form>
+          <Link
+            href={`/login?next=/explore/${style.slug}`}
+            aria-label={`Save ${style.name} to favourites`}
+            className="inline-flex items-center justify-center rounded-full border-2 border-blush-100 px-4 py-2.5 text-sm font-extrabold text-plum-700 transition-colors hover:border-blush-500"
+          >
+            Save
+          </Link>
         </div>
       </div>
     </article>
