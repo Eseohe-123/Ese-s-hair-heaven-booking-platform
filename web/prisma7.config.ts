@@ -3,12 +3,21 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+function cleanDbUrl(v: string | undefined) {
+  if (!v) return v;
+  let s = v.trim();
+  if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'))) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"] ?? process.env["NETLIFY_DATABASE_URL"],
+    url: cleanDbUrl(process.env["DATABASE_URL"] ?? process.env["NETLIFY_DATABASE_URL"]),
   },
 });
