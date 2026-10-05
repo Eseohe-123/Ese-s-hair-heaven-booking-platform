@@ -1,0 +1,356 @@
+// Phase 0 schema: Better Auth tables + money foundations.
+// Catalogue/request/appointment tables arrive in Phase 2/3.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---- Better Auth core (required tables) ----
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  // Ese's Hair Heaven extensions
+  role          String    @default("customer") // owner | staff | customer
+  phone         String?   @unique
+  sessions      Session[]
+  accounts      Account[]
+  favourites    Favourite[]
+  loyalty       LoyaltyLedger[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// ---- Phase 0: auth, guests, policy, audit (above) ----
+
+// ---- Phase 2: catalogue ----
+model Category {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  slug       String      @unique
+  hairstyles Hairstyle[]
+
+  @@map("category")
+}
+
+model Hairstyle {
+  id                 String         @id @default(cuid())
+  slug               String         @unique
+  name               String
+  categoryId         String
+  category           Category       @relation(fields: [categoryId], references: [id])
+  startingPriceKobo  Int // kobo integers, never float
+  description        String
+  tags               String[]
+  rating             Float          @default(0)
+  reviewsCount       Int            @default(0)
+  badge              String? // BESTSELLER | NEW | PROMO
+  gradient           String? // placeholder artwork until real photos
+  photos             String[] // R2 URLs (Phase 2+: local /uploads in dev)
+  active             Boolean        @default(true)
+  featured           Boolean        @default(false)
+  requests           StyleRequest[]
+  favouritedBy       Favourite[]
+
+  @@map("hairstyle")
+}
+
+model Addon {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  priceKobo   Int // 0 = priced in consultation
+  description String?
+  active      Boolean @default(true)
+
+  @@map("addon")
+}
+
+// ---- Phase 2: requests + consultation ----
+model StyleRequest {
+  id              String       @id @default(cuid())
+  code            String       @unique // human code, e.g. EHH-7K2P9Q
+  guestSessionId  String?
+  userId          String?
+  hairstyleId     String?
+  hairstyle       Hairstyle?   @relation(fields: [hairstyleId], references: [id])
+  customName      String?
+  description     String
+  comboNotes      String?
+  hairDetails     String?
+  specialRequests String?
+  preferredDate   DateTime?
+  photos          String[]
+  status          String       @default("submitted") // submitted | in_consultation | agreed | cancelled
+  adminNotes      String?
+  consultation    Consultation?
+  priceAgreement  PriceAgreement?
+  appointment     Appointment?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([status])
+  @@map("style_request")
+}
+
+model Consultation {
+  id        String       @id @default(cuid())
+  requestId String       @unique
+  request   StyleRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  channel   String       @default("whatsapp_online") // whatsapp_online | physical
+  threadRef String?
+  notes     String?
+  status    String       @default("open") // open | done
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("consultation")
+}
+model GuestSession {
+  id         String   @id @default(cuid())
+  phone      String?
+  email      String?
+  lookupCode String   @unique // e.g. EHH-XXXX, used for My Bookings lookup
+  userId     String? // set when guest merges into an account
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("guest_session")
+}
+
+// ---- Business policy (config-driven, NEVER hard-code %) ----
+model BusinessPolicy {
+  id                 String   @id @default(cuid())
+  depositPct         Int      @default(50) // % of final price due as deposit
+  cancelRetainPct    Int      @default(50) // % of DEPOSIT retained on customer cancel
+  rescheduleFeeKobo  Int      @default(0) // flat fee, kobo
+  noshowFeeKobo      Int      @default(0) // flat fee, kobo
+  noticeHours        Int      @default(48)
+  effectiveFrom      DateTime @default(now())
+  createdBy          String?
+  createdAt          DateTime @default(now())
+
+  @@map("business_policy")
+}
+
+// ---- Append-only audit trail (who changed what, when, why) ----
+model AuditLog {
+  id         String   @id @default(cuid())
+  entity     String // e.g. business_policy, payment, refund
+  entityId   String
+  oldValue   Json?
+  newValue   Json?
+  changedBy  String?
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@map("audit_log")
+}
+
+// ---- Phase 3: price agreement, appointments, payments ----
+model PriceAgreement {
+  id               String        @id @default(cuid())
+  requestId        String        @unique
+  request          StyleRequest  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  basePriceKobo    Int
+  customKobo       Int           @default(0)
+  extensionsKobo   Int           @default(0)
+  discountKobo     Int           @default(0)
+  finalPriceKobo   Int
+  depositKobo      Int
+  balanceKobo      Int
+  policySnapshot   Json // frozen business_policy at agreement time
+  notes            String?
+  createdBy        String?
+  approvedAt       DateTime?
+  appointment      Appointment?
+
+  @@map("price_agreement")
+}
+
+model Appointment {
+  id                    String          @id @default(cuid())
+  code                  String          @unique // e.g. APT-XXXXXX
+  requestId             String          @unique
+  request               StyleRequest    @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  priceAgreementId      String          @unique
+  priceAgreement        PriceAgreement  @relation(fields: [priceAgreementId], references: [id])
+  datetime              DateTime
+  status                String          @default("pending_deposit") // pending_deposit | secured | reminded | completed | cancelled_customer | cancelled_business | rescheduled | no_show
+  locationSnapshot      String?
+  originalAppointmentId String?
+  payments              Payment[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  @@index([status])
+  @@index([datetime])
+  @@map("appointment")
+}
+
+model Payment {
+  id            String      @id @default(cuid())
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  type          String      // deposit | final | extension | reschedule_fee
+  amountKobo    Int
+  method        String      // card | transfer | manual | cash
+  provider      String?     // paystack | flutterwave | bank
+  providerRef   String?     @unique
+  status        String      @default("pending") // pending | verified | failed
+  verifiedBy    String?
+  settledAt     DateTime?
+  createdAt     DateTime    @default(now())
+
+  @@index([appointmentId])
+  @@map("payment")
+}
+
+model Refund {
+  id             String   @id @default(cuid())
+  paymentId      String
+  reason         String
+  retainedKobo   Int
+  refundableKobo Int
+  approvedBy     String?
+  method         String?
+  reference      String?
+  status         String   @default("requested") // requested | approved | rejected | processing | completed
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("refund")
+}
+
+// ---- Phase 4: reschedule links, reviews, notification log ----
+model Reschedule {
+  id                  String      @id @default(cuid())
+  originalAppointmentId String
+  newAppointmentId    String      @unique
+  feeKobo             Int         @default(0)
+  depositCarriedKobo  Int         @default(0)
+  createdBy           String?
+  createdAt           DateTime    @default(now())
+
+  @@map("reschedule")
+}
+
+model Review {
+  id                   String      @id @default(cuid())
+  appointmentId        String      @unique
+  rating               Int // 1-5
+  text                 String?
+  photo                String?
+  permissionToFeature  Boolean     @default(false)
+  status               String      @default("pending") // pending | approved | rejected
+  createdAt            DateTime    @default(now())
+
+  @@map("review")
+}
+
+model Notification {
+  id            String    @id @default(cuid())
+  appointmentId String?
+  channel       String // whatsapp | email | sms
+  template      String // deposit_due | secured | reminder_3d | reminder_1d | reminder_day | cancelled | rescheduled | review_ask
+  status        String    @default("queued") // queued | sent | failed
+  providerRef   String?
+  scheduledFor  DateTime?
+  sentAt        DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@index([status, scheduledFor])
+  @@map("notification")
+}
+
+// ---- Phase 5: favourites, loyalty, offers ----
+model Favourite {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hairstyleId String
+  hairstyle   Hairstyle @relation(fields: [hairstyleId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, hairstyleId])
+  @@map("favourite")
+}
+
+model LoyaltyLedger {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  points        Int // +earn / -reverse
+  reason        String
+  appointmentId String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("loyalty_ledger")
+}
+
+model Offer {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  code        String?
+  active      Boolean   @default(true)
+  validFrom   DateTime?
+  validUntil  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@map("offer")
+}

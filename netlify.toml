@@ -1,0 +1,11 @@
+[build]
+  base = "web"
+  command = "npm run db:deploy && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# Next.js App Router + API routes run as Netlify Functions/Edge automatically
+# Add env vars in Netlify Dashboard or via CLI - never commit secrets here

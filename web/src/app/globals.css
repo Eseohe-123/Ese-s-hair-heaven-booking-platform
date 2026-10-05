@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* Ese's Hair Heaven — Classy • Cute • Unique */
+  --color-blush-50: #fdf2f7;
+  --color-blush-100: #fce7f3;
+  --color-blush-200: #fbcfe8;
+  --color-blush-500: #f472a0;
+  --color-blush-600: #e05286;
+  --color-blush-700: #be3d6f;
+
+  --color-plum-50: #faf0f5;
+  --color-plum-100: #f3dce7;
+  --color-plum-600: #9a2b5e;
+  --color-plum-700: #6b2148;
+  --color-plum-900: #471532;
+
+  --color-cream: #fff7f0;
+  --color-cream-dark: #fbeedf;
+
+  --color-gold-400: #e3b93a;
+  --color-gold-500: #d4a017;
+  --color-gold-600: #a97c0d;
+
+  --color-cocoa-500: #9a7684;
+  --color-cocoa-700: #5c3f46;
+  --color-cocoa-900: #3e2a2e;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-heaven: 1.125rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-cocoa-900);
+}
+
+::selection {
+  background: var(--color-blush-200);
+}
+
+/* Fun-yet-classy scalloped divider */
+.scallop {
+  height: 22px;
+  background: radial-gradient(
+    circle at 14px -4px,
+    transparent 16px,
+    var(--scallop-fill, #ffffff) 17px
+  );
+  background-size: 32px 22px;
+}

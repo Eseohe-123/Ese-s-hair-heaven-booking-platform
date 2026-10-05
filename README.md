@@ -1,6 +1,6 @@
-# Ese's Hair Heaven — Booking Platform
+# Hairven — Booking Platform
 
-Customer booking platform for Ese's Hair Heaven, built around the entire hair experience — not just appointments.
+Customer booking platform for Hairven, built around the entire hair experience — not just appointments.
 
 Brand: warm, welcoming, feminine, modern, premium-but-affordable, fun and youthful. Classy • Cute • Unique.
 

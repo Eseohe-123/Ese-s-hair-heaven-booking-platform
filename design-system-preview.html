@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hairven — Design System Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blush:#F472A0; --plum:#6B2148; --cream:#FFF7F0; --gold:#D4A017; --cocoa:#3E2A2E;
+  --white:#ffffff; --line:#F5D9E3; --muted:#9A7684; --radius:18px;
+  --shadow:0 10px 30px rgba(107,33,72,.12);
+}
+*{box-sizing:border-box} body{margin:0;font-family:"Nunito Sans",system-ui;background:var(--cream);color:var(--cocoa)}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+.hero{background:linear-gradient(135deg,var(--plum),#9A2B5E 55%,var(--blush));color:#fff;border-radius:28px;padding:44px 32px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:26px;background:radial-gradient(circle at 16px -6px, transparent 18px, var(--cream) 19px);background-size:36px 26px}
+.hero h1{font-family:Fraunces,serif;font-size:clamp(32px,5vw,54px);margin:0 0 8px}
+.hero p{margin:0 0 20px;opacity:.92;max-width:60ch}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:13px 24px;font-weight:800;cursor:pointer;font-size:15px}
+.btn-primary{background:var(--blush);color:#fff;box-shadow:0 8px 20px rgba(244,114,160,.45)}
+.btn-secondary{background:#fff;color:var(--plum);border:2px solid #fff}
+.btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7)}
+.btn-dark{background:var(--plum);color:#fff}
+.grid{display:grid;gap:18px}.g5{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+.sw{height:86px}.sw-body{padding:10px 12px;font-size:13px}.sw-body b{display:block}
+.sec{margin-top:36px}.sec h2{font-family:Fraunces,serif;color:var(--plum);font-size:28px;margin:0 0 6px}.sec p.sub{color:var(--muted);margin:0 0 16px}
+.demo{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;background:#fff}.chip.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+.style-card{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.style-img{width:120px;height:120px;border-radius:16px;background:linear-gradient(135deg,#FBCFE8,#F472A0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.badge{display:inline-block;background:#FEF3C7;color:#92400E;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800}
+.price{font-weight:800;color:var(--plum)}.price small{color:var(--muted);font-weight:600}
+.stars{color:var(--gold);letter-spacing:2px}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+.slot{border:2px solid var(--line);border-radius:14px;padding:10px;text-align:center;font-weight:700}.slot.sel{border-color:var(--blush);background:#FFF0F5}
+.policy{border:2px dashed var(--blush);background:#FFF0F5;border-radius:16px;padding:14px;margin-top:14px;font-size:14px}
+.receipt{background:var(--plum);color:#fff;border-radius:16px;padding:16px;margin-top:14px;font-size:14px}
+.receipt table{width:100%;border-collapse:collapse}.receipt td{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.2)}.receipt td:last-child{text-align:right}
+.chat{max-width:340px;background:#fff;border:1px solid var(--line);border-radius:18px 18px 18px 6px;padding:12px 14px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div style="letter-spacing:3px;font-size:12px;font-weight:800;opacity:.85">CLASSY • CUTE • UNIQUE</div>
+    <h1>Hairven</h1>
+    <p>Warm, welcoming, girly, modern, premium-but-affordable. This is the proposed design direction — confirm against your flyer.</p>
+    <div class="btnrow">
+      <button class="btn btn-primary">Explore Hairstyles</button>
+      <button class="btn btn-secondary">Tell Ese What I Want</button>
+      <button class="btn btn-ghost">Consultation (Free)</button>
+    </div>
+  </div>
+
+  <div class="sec"><h2>1. Palette</h2><p class="sub">Warm, cute, distinctive. Text combos are WCAG AA.</p>
+    <div class="grid g5">
+      <div class="card"><div class="sw" style="background:#F472A0"></div><div class="sw-body"><b>Blush Rose</b>#F472A0 — primary buttons, highlights</div></div>
+      <div class="card"><div class="sw" style="background:#6B2148"></div><div class="sw-body"><b>Deep Plum</b>#6B2148 — headings, contrast</div></div>
+      <div class="card"><div class="sw" style="background:#FFF7F0;border-bottom:1px solid var(--line)"></div><div class="sw-body"><b>Cream</b>#FFF7F0 — page background</div></div>
+      <div class="card"><div class="sw" style="background:#D4A017"></div><div class="sw-body"><b>Gold</b>#D4A017 — premium accent, stars</div></div>
+      <div class="card"><div class="sw" style="background:#3E2A2E"></div><div class="sw-body"><b>Cocoa</b>#3E2A2E — body text</div></div>
+    </div>
+  </div>
+
+  <div class="sec"><h2>2. Typography</h2><p class="sub">Fraunces (display, classy) + Nunito Sans (body, friendly).</p>
+    <div class="demo">
+      <div style="font-family:Fraunces,serif;font-size:34px;color:var(--plum)">Knotless Braids, but make it Heaven</div>
+      <div style="margin-top:6px">Body text: consultation is free on WhatsApp. Final price is agreed before any deposit — no surprises.</div>
+    </div>
+  </div>
+
+  <div class="sec"><h2>3. Components</h2><p class="sub">Real pieces from the booking flow.</p>
+    <div class="demo">
+      <span class="badge">BESTSELLER</span> <span class="badge" style="background:#FCE7F3;color:#9D174D">NEW</span>
+      <span class="badge" style="background:#E0E7FF;color:#3730A8">PROMO</span>
+      <div class="style-card" style="margin-top:14px">
+        <div class="style-img">PHOTO</div>
+        <div><div style="font-weight:800;font-size:18px">Boho Knotless Braids</div>
+        <div class="price">Starting from ₦35,000 <small>• final price agreed in consultation</small></div>
+        <div class="chips" style="margin-top:8px"><span class="chip on">Long</span><span class="chip">Medium</span><span class="chip">Coloured</span><span class="chip">+ Curls</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px"><button class="btn btn-dark">Request This Style</button><button class="btn" style="border:2px solid var(--line);background:#fff">♡ Save</button></div></div>
+      </div>
+      <div class="stars" style="margin-top:12px">★★★★★ <span style="color:var(--muted)">4.9 — “My hair has never had so many compliments”</span></div>
+      <div style="font-weight:800;margin-top:16px">Pick a time (Ese confirms):</div>
+      <div class="slots"><div class="slot">Fri 10:00</div><div class="slot sel">Fri 13:00</div><div class="slot">Sat 09:00</div><div class="slot" style="opacity:.45">Sat 12:00 • busy</div></div>
+      <div class="policy">☐ I agree: 50% deposit secures my slot. Customer cancel = 50% of deposit retained. Reschedule needs 48h notice + fee. Ese cancel = 100% refund.</div>
+      <div class="receipt"><table><tr><td>Boho Knotless + fullness</td><td>₦45,000</td></tr><tr><td>Deposit due now (50%)</td><td>₦22,500</td></tr><tr><td>Balance in studio</td><td>₦22,500</td></tr></table></div>
+      <div class="chat"><b style="color:var(--plum)">Heaven Helper 🤍</b><br/>Hi babe! Want help picking a length or checking prices? Tap <b>Talk to a Person</b> anytime to reach Ese.</div>
+    </div>
+  </div>
+  <p style="color:var(--muted);margin-top:28px;font-size:13px">File: design-system-preview.html • Palette/type/components per IMPLEMENTATION_PLAN.md §2 • Mobile-first, 16–20px radii, soft shadows.</p>
+</div>
+</body>
+</html>
