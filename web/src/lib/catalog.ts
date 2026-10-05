@@ -58,6 +58,8 @@ export async function getHairstyles(filters?: {
     include: { category: { select: { name: true } } },
     orderBy: { name: "asc" },
   });
+  // Fresh DB (no seed yet) → show static catalogue instead of an empty page.
+  if (rows.length === 0) return staticFallback(filters);
   return rows.map(toUIStyle);
 }
 
