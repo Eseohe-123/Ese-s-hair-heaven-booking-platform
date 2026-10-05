@@ -1,7 +1,10 @@
 [build]
   base = "web"
-  command = "node -e \"const r=process.env.DATABASE_URL||'';const s=r.trim().replace(/^['\\\"]|['\\\"]$/g,'');console.log('DBURL len='+r.length+' trimmed='+s.length+' head='+JSON.stringify(s.slice(0,20))+' scheme_ok='+(s.startsWith('postgresql://')||s.startsWith('postgres://')))\" && npx prisma generate && npm run db:deploy && npm run build"
+  command = "npx prisma generate && npm run db:deploy && npm run build"
   publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [build.environment]
   NODE_VERSION = "22"
