@@ -1,6 +1,6 @@
 [build]
   base = "web"
-  command = "npm run db:deploy && npm run build"
+  command = "npx prisma generate && npm run db:deploy && npm run build"
   publish = ".next"
 
 [build.environment]
