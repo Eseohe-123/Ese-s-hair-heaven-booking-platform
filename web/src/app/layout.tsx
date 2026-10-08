@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SwRegister } from "@/components/SwRegister";
 import { InstallBanner } from "@/components/InstallBanner";
+import { FloatingHome } from "@/components/FloatingHome";
 
 const display = Fraunces({
   variable: "--font-display",
@@ -65,6 +66,7 @@ export default function RootLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <FloatingHome />
       </body>
     </html>
   );
