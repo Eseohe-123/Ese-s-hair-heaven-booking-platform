@@ -39,7 +39,6 @@ export default async function ExplorePage({
           placeholder="Search by name — try 'braids'"
           className="flex-1 rounded-full border-2 border-blush-100 bg-white px-5 py-3 text-sm outline-none placeholder:text-cocoa-500 focus:border-blush-500"
         />
-        {cat && <input type="hidden" name="cat" value={cat} />}
         <button type="submit" className="rounded-full bg-plum-700 px-6 py-3 text-sm font-extrabold text-white hover:bg-plum-900">
           Search
         </button>

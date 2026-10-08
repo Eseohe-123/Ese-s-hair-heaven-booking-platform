@@ -185,7 +185,7 @@ export const FAQS: Faq[] = [
   },
 ];
 
-export const WHATSAPP_LINK = "https://wa.me/2340000000000";
+export const WHATSAPP_LINK = "https://wa.me/2347056692994";
 
 export function formatNaira(koboOrNaira: number): string {
   return `₦${koboOrNaira.toLocaleString("en-NG")}`;

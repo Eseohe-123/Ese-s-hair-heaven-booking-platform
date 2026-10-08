@@ -39,10 +39,45 @@ export default async function TrackRequestPage({
   return (
     <div className="mx-auto max-w-3xl px-5 py-10">
       <SectionHeading
-        kicker={`REQUEST ${request.code}`}
+        kicker="BOOKING CONFIRMED"
         title={request.hairstyle?.name ?? request.customName ?? "Custom request"}
         sub={STATUS_COPY[request.status] ?? request.status}
       />
+      <div className="mb-6 rounded-[1.5rem] bg-plum-700 p-6 text-center text-white shadow-[0_10px_30px_rgba(107,33,72,0.35)]">
+        <p className="text-xs font-extrabold tracking-[3px] text-blush-200">
+          YOUR TRACKING CODE
+        </p>
+        <p className="mt-1 font-display text-4xl font-bold tracking-wide sm:text-5xl">
+          {request.code}
+        </p>
+        <p className="mt-2 text-sm font-semibold text-white/85">
+          Screenshot or write this down — it finds your booking anytime.
+        </p>
+      </div>
+      {!sessionUser ? (
+        <div className="mb-6 rounded-[1.5rem] border-2 border-blush-500 bg-blush-50 p-5 text-center">
+          <p className="font-extrabold text-plum-700">Keep this booking in your account</p>
+          <p className="mt-1 text-sm text-cocoa-700">
+            Log in or create a free account to save it, earn loyalty points and rebook faster.
+          </p>
+          <div className="mt-3">
+            <Button href={`/login?next=/track/${request.code}`}>Log in to save my booking</Button>
+          </div>
+        </div>
+      ) : (
+        !request.userId && (
+          <form action={claimRequest} className="mb-6 rounded-[1.5rem] border-2 border-blush-500 bg-blush-50 p-5 text-center">
+            <input type="hidden" name="code" value={request.code} />
+            <p className="font-extrabold text-plum-700">Keep this booking in your account</p>
+            <button
+              type="submit"
+              className="mt-3 inline-flex items-center justify-center rounded-full bg-plum-700 px-6 py-3 text-sm font-extrabold text-white hover:bg-plum-900"
+            >
+              Save to my account
+            </button>
+          </form>
+        )
+      )}
       <div className="rounded-[1.5rem] border border-blush-100 bg-white p-6 sm:p-8">
         <dl className="space-y-3 text-sm">
           <div className="flex justify-between gap-4">
@@ -96,17 +131,8 @@ export default async function TrackRequestPage({
           </Button>
         </div>
         <p className="mt-4 text-xs text-cocoa-500">
-          Save your code <strong>{request.code}</strong> — use it to track this
-          request or mention it to Ese. Look it up anytime at /track.
+          Use your code above to track this request or mention it to Ese. Look it up anytime at /track.
         </p>
-        {sessionUser && !request.userId && (
-          <form action={claimRequest} className="mt-3">
-            <input type="hidden" name="code" value={request.code} />
-            <button type="submit" className="text-sm font-bold text-blush-600 underline">
-              Save to my account
-            </button>
-          </form>
-        )}
       </div>
     </div>
   );
