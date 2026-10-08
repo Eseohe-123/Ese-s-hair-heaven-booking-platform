@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoMark } from "./LogoMark";
+import { InstallButton } from "./InstallButton";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -33,6 +34,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">
+          <InstallButton compact />
           <Link
             href="/track"
             className="rounded-full px-4 py-2 text-sm font-extrabold text-plum-700 hover:bg-blush-50"
@@ -72,6 +74,9 @@ export function SiteHeader() {
             >
               Tell Ese What I Want
             </Link>
+            <span className="mt-1 flex justify-center">
+              <InstallButton compact />
+            </span>
           </nav>
         </details>
       </div>

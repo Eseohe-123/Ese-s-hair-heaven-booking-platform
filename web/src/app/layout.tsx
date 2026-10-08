@@ -3,6 +3,7 @@ import { Fraunces, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SwRegister } from "@/components/SwRegister";
 
 const display = Fraunces({
   variable: "--font-display",
@@ -37,6 +38,17 @@ export const metadata: Metadata = {
     description:
       "The full hair experience — inspiration, free consultation, appointment and aftercare.",
   },
+  manifest: "/manifest.webmanifest",
+  themeColor: "#6b2148",
+  appleWebApp: {
+    capable: true,
+    title: "Hairven",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-192.png",
+  },
 };
 
 export default function RootLayout({
@@ -47,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col bg-cream font-body text-cocoa-900 antialiased">
+        <SwRegister />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
