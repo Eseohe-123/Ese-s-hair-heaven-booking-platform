@@ -68,7 +68,9 @@ export async function getHairstyle(slug: string): Promise<UIStyle | null> {
     where: { slug, active: true },
     include: { category: { select: { name: true } } },
   });
-  return row ? toUIStyle(row) : null;
+  // Fresh DB (no seed yet) → resolve from static catalogue instead of 404.
+  if (!row) return staticFallback().find((s) => s.slug === slug) ?? null;
+  return toUIStyle(row);
 }
 
 export async function getCategories(): Promise<{ name: string; slug: string }[]> {
