@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SwRegister } from "@/components/SwRegister";
+import { InstallBanner } from "@/components/InstallBanner";
 
 const display = Fraunces({
   variable: "--font-display",
@@ -60,6 +61,7 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col bg-cream font-body text-cocoa-900 antialiased">
         <SwRegister />
+        <InstallBanner />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
