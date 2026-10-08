@@ -12,12 +12,18 @@ const badgeStyles: Record<string, string> = {
 export function StyleCard({ style }: { style: Hairstyle }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-[1.125rem] border border-blush-100 bg-white shadow-[0_10px_30px_rgba(107,33,72,0.12)]">
-      <StylePhoto
-        photo={style.photo}
-        name={style.name}
-        gradient={style.gradient}
-        className="h-44 w-full text-2xl"
-      />
+      <Link
+        href={`/explore/${style.slug}`}
+        aria-label={`View ${style.name} details`}
+        className="block"
+      >
+        <StylePhoto
+          photo={style.photo}
+          name={style.name}
+          gradient={style.gradient}
+          className="h-44 w-full text-2xl"
+        />
+      </Link>
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-2 flex items-center gap-2">
           {style.badge && (
@@ -30,7 +36,9 @@ export function StyleCard({ style }: { style: Hairstyle }) {
           <span className="text-xs font-bold text-cocoa-500">{style.category}</span>
         </div>
         <h3 className="font-display text-xl font-semibold text-plum-700">
-          {style.name}
+          <Link href={`/explore/${style.slug}`} className="hover:underline">
+            {style.name}
+          </Link>
         </h3>
         <p className="mt-1 text-sm text-cocoa-500">{style.description}</p>
         <p className="mt-3 font-extrabold text-plum-700">
