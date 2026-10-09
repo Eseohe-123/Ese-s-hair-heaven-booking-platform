@@ -8,6 +8,7 @@ type PromptEvent = Event & {
 };
 
 const DISMISS_KEY = "hairven-install-dismissed";
+const DECLINE_COUNT_KEY = "hairven-install-declines";
 
 function isIos(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -75,7 +76,22 @@ export function InstallBanner() {
     }
     await promptEvent.prompt();
     const { outcome } = await promptEvent.userChoice;
-    if (outcome === "accepted") setPromptEvent(null);
+    if (outcome === "accepted") {
+      setPromptEvent(null);
+      return;
+    }
+    // Declined twice → stop asking (best UX). Dismiss stays permanent.
+    try {
+      const n = (Number(localStorage.getItem(DECLINE_COUNT_KEY)) || 0) + 1;
+      localStorage.setItem(DECLINE_COUNT_KEY, String(n));
+      if (n >= 2) {
+        localStorage.setItem(DISMISS_KEY, "1");
+        setDismissed(true);
+        setPromptEvent(null);
+      }
+    } catch {
+      // storage unavailable — leave the banner as-is
+    }
   };
 
   return (
