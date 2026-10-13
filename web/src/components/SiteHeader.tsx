@@ -50,7 +50,13 @@ export function SiteHeader() {
             Tell Ese What I Want
           </Link>
         </div>
-        <MobileMenu items={NAV} />
+        <MobileMenu
+          items={[
+            ...NAV,
+            { href: "/track", label: "My Bookings" },
+            { href: "/account", label: "Account" },
+          ]}
+        />
       </div>
     </header>
   );
