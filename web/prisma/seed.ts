@@ -61,6 +61,23 @@ async function main() {
       create: { slug: s.slug, name: s.name, categoryId: category.id, startingPriceKobo: s.price, description: s.description, tags: s.tags, rating: s.rating, reviewsCount: s.reviewsCount, badge: s.badge, gradient: s.gradient, photos: [], featured: s.featured, active: true },
     });
   }
+  // Link repo-shipped catalogue photos (web/public/styles) wherever a style
+  // has none yet. Never overwrites photos uploaded later via admin.
+  const { existsSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  for (const s of STYLES) {
+    for (const ext of ["png", "jpg", "jpeg", "webp"]) {
+      const file = join(process.cwd(), "public", "styles", `${s.slug}.${ext}`);
+      if (existsSync(file)) {
+        await prisma.hairstyle.updateMany({
+          where: { slug: s.slug, photos: { isEmpty: true } },
+          data: { photos: [`/styles/${s.slug}.${ext}`] },
+        });
+        break;
+      }
+    }
+  }
+  console.log("catalogue photos linked");
   const count = await prisma.hairstyle.count();
   console.log(`catalogue seeded: ${count} hairstyles`);
 
