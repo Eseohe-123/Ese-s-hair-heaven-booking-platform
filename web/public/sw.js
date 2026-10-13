@@ -2,7 +2,7 @@
  * Static assets are cached on first load; pages fall back to cache
  * when offline. Bump CACHE to invalidate.
  */
-const CACHE = "hairven-v1";
+const CACHE = "hairven-v2";
 
 self.addEventListener("install", () => {
   self.skipWaiting();

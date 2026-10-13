@@ -1,5 +1,5 @@
 {
-  "name": "Hairven — Ese's Hair Heaven",
+  "name": "Hairven — Everything Hair",
   "short_name": "Hairven",
   "description": "Explore hairstyles, get a free consultation and book your appointment. Final price always agreed before any deposit.",
   "start_url": "/",
@@ -20,6 +20,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
