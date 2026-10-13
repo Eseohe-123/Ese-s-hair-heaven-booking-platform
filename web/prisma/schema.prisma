@@ -24,6 +24,7 @@ model User {
   phone         String?   @unique
   sessions      Session[]
   accounts      Account[]
+  requests      StyleRequest[]
   favourites    Favourite[]
   loyalty       LoyaltyLedger[]
 
@@ -124,6 +125,7 @@ model StyleRequest {
   code            String       @unique // human code, e.g. EHH-7K2P9Q
   guestSessionId  String?
   userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
   hairstyleId     String?
   hairstyle       Hairstyle?   @relation(fields: [hairstyleId], references: [id])
   customName      String?

@@ -7,3 +7,7 @@ web/.env.local
 
 # Local Netlify folder
 .netlify
+
+# Database backups (customer data — never commit)
+backups/
+cloudflared-tunnel.log

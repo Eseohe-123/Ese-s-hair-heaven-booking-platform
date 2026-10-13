@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/Button";
+import { StylePhoto } from "@/components/StylePhoto";
 import { prisma } from "@/lib/prisma";
 import { WHATSAPP_LINK } from "@/data/content";
 import { formatKobo } from "@/lib/money";
@@ -54,9 +55,8 @@ export default async function AdminRequestDetailPage({
         </dl>
         {request.photos.length > 0 && (
           <div className="mt-4 grid grid-cols-4 gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             {request.photos.map((src) => (
-              <img key={src} src={src} alt="Customer inspiration" className="aspect-square rounded-xl object-cover" />
+              <StylePhoto key={src} photo={src} name="Customer inspiration" gradient="linear-gradient(135deg,#fbcfe8,#f472a0)" className="aspect-square rounded-xl text-xs" />
             ))}
           </div>
         )}

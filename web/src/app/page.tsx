@@ -5,6 +5,9 @@ import { StyleCard } from "@/components/StyleCard";
 import { FAQS, REVIEWS, WHATSAPP_LINK } from "@/data/content";
 import { getHairstyles, staticFallback } from "@/lib/catalog";
 
+// Refresh at most once a minute so new style photos reach the homepage fast.
+export const revalidate = 60;
+
 const STEPS = [
   {
     title: "Pick or describe",

@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/Button";
 import { prisma } from "@/lib/prisma";
 import { WHATSAPP_LINK, formatNaira } from "@/data/content";
+import { StylePhoto } from "@/components/StylePhoto";
 import { claimRequest } from "@/app/account/actions";
 import { getSessionUser } from "@/lib/session";
 
@@ -111,9 +112,8 @@ export default async function TrackRequestPage({
         </dl>
         {request.photos.length > 0 && (
           <div className="mt-4 grid grid-cols-4 gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             {request.photos.map((src) => (
-              <img key={src} src={src} alt="Inspiration photo" className="aspect-square rounded-xl object-cover" />
+              <StylePhoto key={src} photo={src} name="Inspiration" gradient="linear-gradient(135deg,#fbcfe8,#f472a0)" className="aspect-square text-xs" />
             ))}
           </div>
         )}

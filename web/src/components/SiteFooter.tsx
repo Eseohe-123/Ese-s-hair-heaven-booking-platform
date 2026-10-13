@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { WHATSAPP_LINK } from "@/data/content";
 import { LogoMark } from "./LogoMark";
+import { OwnerDashboardLink } from "./OwnerDashboardLink";
 
 export function SiteFooter() {
   return (
@@ -38,6 +39,7 @@ export function SiteFooter() {
             <li><Link href="/request" className="hover:text-white">Tell Ese What I Want</Link></li>
             <li><Link href="/gallery" className="hover:text-white">Gallery</Link></li>
             <li><Link href="/help" className="hover:text-white">Help &amp; Policies</Link></li>
+            <OwnerDashboardLink />
           </ul>
         </div>
       </div>

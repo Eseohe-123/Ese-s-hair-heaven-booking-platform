@@ -1,0 +1,66 @@
+# Production stack for the VPS. Run: docker compose -f docker-compose.prod.yml up -d --build
+# Required in web/.env on the server: DATABASE_URL (with real password),
+# POSTGRES_PASSWORD, BETTER_AUTH_SECRET, BETTER_AUTH_URL (https domain),
+# BETTER_AUTH_TRUSTED_ORIGINS (https domain), CRON_SECRET, BANK_*, ADMIN_EMAIL,
+# GEMINI_API_KEY, CLOUDFLARE_TUNNEL_TOKEN, plus provider keys as collected.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in web/.env}
+      POSTGRES_DB: hair_heaven
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d hair_heaven"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    expose:
+      - "3000"
+    env_file:
+      - ./web/.env
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in web/.env}@postgres:5432/hair_heaven
+      REDIS_URL: redis://redis:6379
+    volumes:
+      # Uploaded photos survive rebuilds here (logo.png stays baked in the image).
+      - mediadata:/app/public/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Public doorway: no open ports needed. Create the tunnel in the Cloudflare
+  # dashboard (Zero Trust → Networks → Tunnels), point it at http://web:3000
+  # for your domain, paste the token into web/.env as CLOUDFLARE_TUNNEL_TOKEN.
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:?set CLOUDFLARE_TUNNEL_TOKEN in web/.env}
+    depends_on:
+      - web
+
+volumes:
+  pgdata:
+  redisdata:
+  mediadata:

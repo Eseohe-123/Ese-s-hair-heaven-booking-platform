@@ -4,7 +4,9 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { StylePhoto } from "@/components/StylePhoto";
 import { prisma } from "@/lib/prisma";
 import { toUIStyle } from "@/lib/catalog";
-import { removeStylePhoto, uploadStylePhoto } from "./actions";
+import { storageBackend } from "@/lib/uploads";
+import { PhotoUploadForm } from "./PhotoUploadForm";
+import { removeStylePhoto } from "./actions";
 
 export const metadata: Metadata = {
   title: "Style photos",
@@ -47,6 +49,9 @@ export default async function AdminPhotosPage() {
         <strong>web/public</strong> folder and the header + footer switch from
         the “H” monogram automatically. No code change needed.
       </p>
+      <p className="mb-6 text-center text-xs text-cocoa-500">
+        Photo storage: <strong>{storageBackend() === "r2" ? "Cloudflare R2 (permanent)" : "This laptop only (add R2 keys for permanent hosting)"}</strong>
+      </p>
       <p className="mb-6 text-center text-sm">
         <Link href="/admin/requests" className="font-bold text-blush-600 underline">
           ← Back to requests inbox
@@ -58,16 +63,7 @@ export default async function AdminPhotosPage() {
             <StylePhoto photo={s.photo} name={s.name} gradient={s.gradient} className="aspect-square w-full text-2xl" />
             <p className="mt-2 text-sm font-extrabold text-plum-700">{s.name}</p>
             <p className="text-xs text-cocoa-500">{s.photo ? "Photo live" : "Placeholder showing"}</p>
-            <form action={uploadStylePhoto} className="mt-2 flex flex-col gap-2">
-              <input type="hidden" name="slug" value={s.slug} />
-              <input
-                name="photo" type="file" accept="image/*" required
-                className="w-full text-xs text-cocoa-700 file:mr-2 file:rounded-full file:border-0 file:bg-blush-500 file:px-3 file:py-1.5 file:text-xs file:font-extrabold file:text-white"
-              />
-              <button type="submit" className="rounded-full bg-plum-700 px-4 py-2 text-xs font-extrabold text-white">
-                Upload photo
-              </button>
-            </form>
+            <PhotoUploadForm slug={s.slug} />
             {s.photo && (
               <form action={removeStylePhoto} className="mt-2">
                 <input type="hidden" name="slug" value={s.slug} />

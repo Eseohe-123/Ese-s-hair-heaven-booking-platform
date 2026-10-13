@@ -288,3 +288,9 @@ export async function moderateReview(formData: FormData): Promise<void> {
   await prisma.review.update({ where: { id: reviewId }, data: { status } });
   redirect("/admin/reviews");
 }
+
+export async function sendDueNotifications(): Promise<void> {
+  const { processDueNotifications } = await import("@/lib/notify/process");
+  await processDueNotifications();
+  redirect("/admin/notifications");
+}

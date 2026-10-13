@@ -1,4 +1,6 @@
-// Shows the real uploaded photo when one exists, otherwise the
+import { isVideoUrl } from "@/lib/uploads";
+
+// Shows the real uploaded photo or video when one exists, otherwise the
 // branded gradient placeholder with style initials.
 export function StylePhoto({
   photo,
@@ -11,6 +13,18 @@ export function StylePhoto({
   gradient: string;
   className: string;
 }) {
+  if (photo && isVideoUrl(photo)) {
+    return (
+      <video
+        src={photo}
+        controls
+        preload="metadata"
+        playsInline
+        aria-label={`${name} video`}
+        className={`${className} object-cover bg-black`}
+      />
+    );
+  }
   if (photo) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={photo} alt={name} className={`${className} object-cover`} />;
