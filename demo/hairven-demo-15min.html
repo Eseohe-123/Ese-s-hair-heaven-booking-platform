@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hairven — 15-min Demo</title>
+<style>
+  :root { --plum:#6b2148; --plum-d:#471532; --blush:#f472a0; --blush-soft:#fce7f3; --cream:#fff7f0; --cocoa:#5c3f46; --gold:#d4a017; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Georgia, 'Times New Roman', serif; background:var(--plum-d); color:#fff; }
+  .deck { max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
+  .slide { background:var(--cream); color:var(--cocoa); border-radius:20px; padding:40px 44px; margin:22px 0; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+  .slide h1 { color:var(--plum); font-size:40px; margin:0 0 8px; }
+  .slide h2 { color:var(--plum); font-size:28px; margin:0 0 12px; border-bottom:3px solid var(--blush); display:inline-block; padding-bottom:4px; }
+  .slide p, .slide li { font-size:18px; line-height:1.55; }
+  .slide ul { padding-left:22px; }
+  .slide li { margin:6px 0; }
+  .kicker { font-family: Arial, sans-serif; font-size:12px; font-weight:800; letter-spacing:3px; color:var(--blush); }
+  .kicker span { color:var(--gold); }
+  .big-link { font-family: Arial, sans-serif; background:var(--plum); color:#fff; border-radius:12px; padding:12px 18px; display:inline-block; margin:6px 8px 6px 0; font-size:17px; font-weight:bold; }
+  .tag { font-family:Arial,sans-serif; font-size:13px; font-weight:bold; background:var(--blush-soft); color:var(--plum); border-radius:999px; padding:4px 12px; display:inline-block; margin:2px 4px 2px 0; }
+  details.notes { margin-top:18px; font-family:Arial,sans-serif; font-size:14px; background:#fff; border:2px dashed var(--blush); border-radius:12px; padding:10px 14px; color:#7a5a63; }
+  details.notes summary { cursor:pointer; font-weight:bold; color:var(--plum); }
+  .time { font-family:Arial,sans-serif; font-size:13px; font-weight:800; color:#fff; background:var(--plum); border-radius:999px; padding:4px 14px; display:inline-block; margin-bottom:10px; }
+  .cover { text-align:center; padding:64px 40px; }
+  .cover h1 { font-size:56px; }
+  .cover .sub { font-size:22px; color:var(--plum); font-style:italic; }
+  @media print { body { background:#fff; } .slide { box-shadow:none; border:2px solid var(--plum); break-inside:avoid; } }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <div class="slide cover">
+    <div class="time">15-MINUTE DEMO</div>
+    <h1>Hairven</h1>
+    <p class="sub">Ese's Hair Heaven — the full hair experience, from inspiration to aftercare</p>
+    <p><span class="tag">Live product</span><span class="tag">Android APK</span><span class="tag">iPhone installable</span></p>
+    <p style="font-size:16px">Live link: <strong>eses-hair-heaven.netlify.app</strong></p>
+    <details class="notes" open><summary>Say (0:00–1:00)</summary>I built Hairven, a booking app for my hair studio. It covers the whole journey: customers find a style, ask for what they want, chat with me for free, agree on price and time, pay a deposit, and get reminders. It is live today on web, Android and iPhone.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">1:00 – 3:30</div>
+    <div class="kicker">THE PROBLEM <span>•</span> CLASSY • CUTE • UNIQUE</div>
+    <h2>Booking hair is chaotic</h2>
+    <ul>
+      <li>Styles scattered across Instagram/WhatsApp chats — no catalogue, no prices.</li>
+      <li>Price agreed in DMs, forgotten by appointment day. Deposit disputes.</li>
+      <li>No-shows and late reschedules with no policy trail.</li>
+      <li>Loyal customers get nothing; new customers can't track anything.</li>
+    </ul>
+    <details class="notes" open><summary>Say</summary>Booking hair today is messy. Styles are lost in Instagram chats. Prices are agreed in DMs and forgotten. Customers disappear without notice. Hairven puts all of it in one place that both sides can see.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">3:30 – 9:30 — LIVE DEMO (core)</div>
+    <div class="kicker">CUSTOMER JOURNEY</div>
+    <h2>Watch a booking happen</h2>
+    <ol>
+      <li><strong>Explore</strong> — search "boho", filter by category, open Boho Knotless Braids.</li>
+      <li><strong>Request This Style</strong> — or <strong>Tell Ese What I Want</strong>: photos, combo notes, preferred time.</li>
+      <li><strong>Send request → tracking code</strong> (big banner, e.g. EHH-XXXXXX). Save to account.</li>
+      <li><strong>Track page</strong> — status, details, <strong>Continue on WhatsApp</strong> with prefilled message + code.</li>
+      <li><strong>Account</strong> — sign up, bookings, favourites, loyalty points.</li>
+    </ol>
+    <p><span class="tag">Search</span><span class="tag">Tracking code</span><span class="tag">WhatsApp handoff</span><span class="tag">Loyalty</span></p>
+    <details class="notes" open><summary>Say + do</summary>Now I will do a real booking in front of you. Watch: I search a style, send a request, and get a tracking code. Note two things: the price is agreed BEFORE any money is paid, and guests can book without an account using just the code.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">9:30 – 11:00</div>
+    <div class="kicker">OWNER SIDE</div>
+    <h2>Ese's cockpit</h2>
+    <ul>
+      <li>Admin: requests queue, consultation status, appointments, payments, gallery, reviews.</li>
+      <li>Consultation flow: submitted → in consultation → agreed → deposit → secured.</li>
+      <li>Policy engine (config, never hard-coded): 50% deposit, 50% of deposit retained on customer cancel, 48h notice.</li>
+    </ul>
+    <details class="notes" open><summary>Say</summary>This is my side of the app. I see all requests in one list, chat with each customer, and confirm price and time. The money rules — 50% deposit, cancellation terms — are saved settings, not handshake deals.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">11:00 – 12:30</div>
+    <div class="kicker">MOBILE</div>
+    <h2>One codebase, three doors</h2>
+    <ul>
+      <li><strong>Web:</strong> the live link — works on any phone browser.</li>
+      <li><strong>Android:</strong> real installable APK (PWA packaged) — show the install banner + Home button.</li>
+      <li><strong>iPhone:</strong> Add to Home Screen — full-screen, offline-friendly via service worker.</li>
+    </ul>
+    <p><span class="tag">PWA manifest</span><span class="tag">Install banner</span><span class="tag">Offline cache</span></p>
+    <details class="notes" open><summary>Say</summary>One app, three doors. The website works on any phone. Android users install it like a normal app. iPhone users add it to their home screen. And when I update the site, all three update at once — no waiting for app stores.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">12:30 – 13:30</div>
+    <div class="kicker">UNDER THE HOOD</div>
+    <h2>Built lean, built honest</h2>
+    <ul>
+      <li>Next.js + Postgres (Neon) + Prisma, hosted free on Netlify.</li>
+      <li>Real war stories: the <em>DATABASE_URL=</em> env bug, function crashes from server-only imports, read-only serverless disk killing photo uploads.</li>
+      <li>Discipline: local-first builds, batched deploys — running a production app on free-tier credits.</li>
+    </ul>
+    <details class="notes" open><summary>Say</summary>The tech is simple and cheap — free tools doing serious work. My favourite story: the app once broke because I pasted the database password with the word DATABASE_URL= stuck in front of it. One tiny mistake, one full evening of errors. That is software.</details>
+  </div>
+
+  <div class="slide">
+    <div class="time">13:30 – 15:00 — CLOSE</div>
+    <div class="kicker">ROADMAP</div>
+    <h2>What's next</h2>
+    <ul>
+      <li>Real logo + hairstyle photography; app icons regenerated from it.</li>
+      <li>Permanent photo storage (R2) for inspiration uploads.</li>
+      <li>Card payments (Paystack/Flutterwave) + reminders (WhatsApp/Email/SMS).</li>
+      <li>Product sales: hair, extensions, aftercare.</li>
+    </ul>
+    <p><span class="big-link">eses-hair-heaven.netlify.app</span></p>
+    <p>Questions? Ask me anything — especially the ugly parts.</p>
+    <details class="notes" open><summary>Questions people may ask</summary>How much does it cost? Almost nothing — free plans. iPhone App Store? Not needed; the home-screen install covers it. Where is customer data? Safe in a Postgres database in Europe. Can it grow? Yes — the same setup grows into paid plans.</details>
+  </div>
+
+</div>
+</body>
+</html>

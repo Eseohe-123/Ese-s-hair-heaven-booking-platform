@@ -16,11 +16,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-blush-100 bg-cream/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <LogoMark />
+          <LogoMark className="h-11 w-auto" />
           <span className="leading-tight">
-            <span className="block font-display text-lg font-semibold text-plum-700">
-              Hairven
-            </span>
             <span className="block text-[10px] font-extrabold tracking-[2px] text-blush-600">
               CLASSY • CUTE • UNIQUE
             </span>

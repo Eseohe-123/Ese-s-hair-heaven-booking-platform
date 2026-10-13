@@ -18,7 +18,7 @@ export function LogoMark({ className = "h-10 w-10" }: { className?: string }) {
   }, []);
   if (logo) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={logo} alt="Hairven logo" className={`${className} rounded-full object-cover`} />;
+    return <img src={logo} alt="Hairven logo" className={`${className} object-contain`} />;
   }
   return (
     <span
