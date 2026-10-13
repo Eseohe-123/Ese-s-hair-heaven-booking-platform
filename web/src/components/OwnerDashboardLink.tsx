@@ -1,17 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 
-// Only renders for Ese's team (role owner/staff). Customers never see it.
+// Owner-only shortcut, verified against the server session (not client data).
+// Customers never see it. Prominent on purpose — this is Ese's front door.
 export function OwnerDashboardLink() {
-  const { data: session, isPending } = authClient.useSession();
-  const role = (session?.user as { role?: string } | undefined)?.role;
-  if (isPending || (role !== "owner" && role !== "staff")) return null;
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    fetch("/api/me")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.signedIn && (d.role === "owner" || d.role === "staff")) setShow(true);
+      })
+      .catch(() => {
+        // offline or logged out — stay hidden
+      });
+  }, []);
+  if (!show) return null;
   return (
     <li>
-      <Link href="/admin" className="text-white/50 hover:text-white">
-        Ese&apos;s Dashboard →
+      <Link
+        href="/admin"
+        className="mt-1 inline-block rounded-full bg-blush-500 px-4 py-1.5 text-sm font-extrabold text-white"
+      >
+        Open Dashboard →
       </Link>
     </li>
   );
