@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.ese_s_hair_heaven_booking_platform_three.twa",
+      "sha256_cert_fingerprints": [
+        "FC:12:6B:0D:8A:3A:EB:34:E3:FA:68:65:EF:2C:6E:92:C8:24:27:8C:4D:37:37:DE:5F:69:46:07:15:BD:B7:45"
+      ]
+    }
+  }
+]
