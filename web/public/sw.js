@@ -1,11 +1,14 @@
-/* Hairven service worker — minimal offline shell.
- * Static assets are cached on first load; pages fall back to cache
- * when offline. Bump CACHE to invalidate.
+/* Hairven service worker — offline shell.
+ * Static assets are cached on first load; pages fall back to cache when
+ * offline. Bump CACHE to invalidate.
+ *
+ * A new build installs as "waiting" instead of taking over silently, so the
+ * page can offer a "new version" refresh (see SwRegister.tsx).
  */
-const CACHE = "hairven-v2";
+const CACHE = "hairven-v3";
 
-self.addEventListener("install", () => {
-  self.skipWaiting();
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {

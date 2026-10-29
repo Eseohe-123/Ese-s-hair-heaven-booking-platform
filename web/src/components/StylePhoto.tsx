@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { isVideoUrl } from "@/lib/uploads";
 
 // Shows the real uploaded photo or video when one exists, otherwise the
@@ -7,11 +8,13 @@ export function StylePhoto({
   name,
   gradient,
   className,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 384px",
 }: {
   photo?: string;
   name: string;
   gradient: string;
   className: string;
+  sizes?: string;
 }) {
   if (photo && isVideoUrl(photo)) {
     return (
@@ -26,8 +29,18 @@ export function StylePhoto({
     );
   }
   if (photo) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={photo} alt={name} className={`${className} object-cover`} />;
+    // Next optimizes these: right size per screen, WebP, lazy below the fold.
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        <Image
+          src={photo}
+          alt={name}
+          fill
+          sizes={sizes}
+          className="object-cover"
+        />
+      </div>
+    );
   }
   return (
     <div

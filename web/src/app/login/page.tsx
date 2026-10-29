@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -56,6 +57,11 @@ function LoginForm() {
         sub="Accounts are optional — members get loyalty points, faster booking and member-only treats."
       />
       <form onSubmit={submit} className="rounded-[1.5rem] border border-blush-100 bg-white p-6">
+        {searchParams.get("reset") === "1" && (
+          <p className="mb-4 rounded-2xl bg-green-50 p-3 text-sm font-bold text-green-800">
+            Password updated. Sign in with your new password.
+          </p>
+        )}
         <div className="mb-4 flex rounded-full bg-blush-50 p-1 text-sm font-extrabold">
           {(["up", "in"] as const).map((m) => (
             <button
@@ -79,6 +85,13 @@ function LoginForm() {
           value={password} onChange={(e) => setPassword(e.target.value)} required
           type="password" minLength={8} placeholder="Password (8+ characters)" className={`${inputCls} mt-3`}
         />
+        {mode === "in" && (
+          <p className="mt-2 text-right text-xs">
+            <Link href="/forgot-password" className="font-extrabold text-blush-600 hover:underline">
+              Forgot password?
+            </Link>
+          </p>
+        )}
         {error && <p className="mt-3 rounded-2xl bg-red-50 p-3 text-sm font-bold text-red-700">{error}</p>}
         <button
           type="submit" disabled={busy}

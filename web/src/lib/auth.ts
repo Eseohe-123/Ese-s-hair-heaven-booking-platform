@@ -28,7 +28,24 @@ export const auth = betterAuth({
   },
   // Phase 5: email + password works fully offline on local Postgres.
   // Magic link + Google land when RESEND / GOOGLE keys are added.
-  emailAndPassword: { enabled: true, requireEmailVerification: false },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+    // Needs RESEND_API_KEY + EMAIL_FROM. Until those exist the request still
+    // returns success (no account enumeration) and support falls back to
+    // WhatsApp, so a missing key never breaks the page.
+    sendResetPassword: async ({ user, url }) => {
+      try {
+        await sendEmail(
+          user.email,
+          "Reset your Hairven password",
+          `Hello ${user.name || "there"},\n\nTap this link to choose a new password:\n${url}\n\nThe link expires in one hour. If you didn't ask for this, ignore this email — your password stays as it is.\n\n— Hairven`,
+        );
+      } catch (err) {
+        console.error("password reset mail failed (non-fatal)", err);
+      }
+    },
+  },
   databaseHooks: {
     user: {
       create: {
