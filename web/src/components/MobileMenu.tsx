@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 // Mobile menu that closes itself when a destination is tapped.
-export function MobileMenu({ items }: { items: { href: string; label: string }[] }) {
+export function MobileMenu({
+  items,
+  owner = false,
+}: {
+  items: { href: string; label: string }[];
+  owner?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <div className="lg:hidden">
@@ -18,6 +24,15 @@ export function MobileMenu({ items }: { items: { href: string; label: string }[]
       </button>
       {open && (
         <nav className="absolute right-4 mt-2 flex w-56 flex-col gap-1 rounded-2xl border border-blush-100 bg-white p-3 shadow-xl">
+          {owner && (
+            <Link
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="mb-1 rounded-xl bg-plum-700 px-3 py-2 text-center text-sm font-extrabold text-white"
+            >
+              Open Dashboard →
+            </Link>
+          )}
           {items.map((item) => (
             <Link
               key={item.href}

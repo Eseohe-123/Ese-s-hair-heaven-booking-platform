@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoMark } from "./LogoMark";
 import { MobileMenu } from "./MobileMenu";
+import { getSessionUser } from "@/lib/session";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -11,7 +12,11 @@ const NAV = [
   { href: "/help", label: "Help" },
 ];
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const user = await getSessionUser();
+  const role = (user as { role?: string } | null)?.role;
+  const isOwner = role === "owner" || role === "staff";
+
   return (
     <header className="sticky top-0 z-50 border-b border-blush-100 bg-cream/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
@@ -31,6 +36,14 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">
+          {isOwner && (
+            <Link
+              href="/admin"
+              className="rounded-full bg-blush-500 px-4 py-2 text-sm font-extrabold text-white hover:bg-blush-600"
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             href="/track"
             className="rounded-full px-4 py-2 text-sm font-extrabold text-plum-700 hover:bg-blush-50"
@@ -51,6 +64,7 @@ export function SiteHeader() {
           </Link>
         </div>
         <MobileMenu
+          owner={isOwner}
           items={[
             ...NAV,
             { href: "/track", label: "My Bookings" },

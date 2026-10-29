@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { WHATSAPP_LINK } from "@/data/content";
 import { LogoMark } from "./LogoMark";
-import { OwnerDashboardLink } from "./OwnerDashboardLink";
+import { getSessionUser } from "@/lib/session";
 
-export function SiteFooter() {
+// Server-rendered so the owner shortcut exists the instant the HTML arrives —
+// no JavaScript, no session fetch, nothing that can fail and hide it.
+export async function SiteFooter() {
+  const user = await getSessionUser();
+  const role = (user as { role?: string } | null)?.role;
+  const isOwner = role === "owner" || role === "staff";
+
   return (
     <footer className="bg-plum-900 text-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-3">
@@ -39,7 +45,16 @@ export function SiteFooter() {
             <li><Link href="/request" className="hover:text-white">Tell Ese What I Want</Link></li>
             <li><Link href="/gallery" className="hover:text-white">Gallery</Link></li>
             <li><Link href="/help" className="hover:text-white">Help &amp; Policies</Link></li>
-            <OwnerDashboardLink />
+            {isOwner && (
+              <li>
+                <Link
+                  href="/admin"
+                  className="mt-1 inline-block rounded-full bg-blush-500 px-4 py-1.5 text-sm font-extrabold text-white hover:bg-blush-600"
+                >
+                  Open Dashboard →
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-// Registers /sw.js and surfaces a "new version" prompt when a fresh build
-// has installed. Without this, people can sit on a cached build for days
-// (which is how stale logos and missing buttons happen).
+// Registers /sw.js and offers a refresh when a new build has installed.
+// Without this, people can sit on a cached build for days (which is how stale
+// logos and dead buttons happen).
 export function SwRegister() {
   const [updateReady, setUpdateReady] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
 
-  // Register once and watch for a waiting worker.
   useEffect(() => {
     if (!("serviceWorker" in navigator) || window.location.protocol !== "https:") {
       return;
@@ -28,6 +26,7 @@ export function SwRegister() {
     navigator.serviceWorker
       .register("/sw.js")
       .then((registration) => {
+        // A worker already waiting (e.g. earlier visit) means a newer build.
         if (registration.waiting && navigator.serviceWorker.controller) {
           setUpdateReady(true);
         }
@@ -49,33 +48,6 @@ export function SwRegister() {
     return () => document.removeEventListener("visibilitychange", onVisible);
   }, []);
 
-  // Reload once the new worker actually takes control.
-  useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
-    let reloaded = false;
-    const onChange = () => {
-      if (reloaded) return;
-      reloaded = true;
-      window.location.reload();
-    };
-    navigator.serviceWorker.addEventListener("controllerchange", onChange);
-    return () => navigator.serviceWorker.removeEventListener("controllerchange", onChange);
-  }, []);
-
-  const refresh = async () => {
-    setRefreshing(true);
-    try {
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (reg?.waiting) {
-        reg.waiting.postMessage("SKIP_WAITING");
-      } else {
-        window.location.reload();
-      }
-    } catch {
-      window.location.reload();
-    }
-  };
-
   if (!updateReady) return null;
 
   return (
@@ -90,11 +62,10 @@ export function SwRegister() {
       <div className="mt-3 flex items-center gap-2">
         <button
           type="button"
-          onClick={refresh}
-          disabled={refreshing}
-          className="rounded-full bg-blush-500 px-4 py-2 text-xs font-extrabold text-white hover:bg-blush-600 disabled:opacity-60"
+          onClick={() => window.location.reload()}
+          className="rounded-full bg-blush-500 px-4 py-2 text-xs font-extrabold text-white hover:bg-blush-600"
         >
-          {refreshing ? "Refreshing…" : "Refresh now"}
+          Refresh now
         </button>
         <button
           type="button"
