@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { SectionHeading } from "@/components/SectionHeading";
+import { PasswordField } from "@/components/PasswordField";
 
 export default function ResetPasswordPage() {
   return (
@@ -23,9 +24,6 @@ function ResetForm() {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-
-  const inputCls =
-    "w-full rounded-2xl border-2 border-blush-100 bg-white px-4 py-3 text-sm outline-none placeholder:text-cocoa-500 focus:border-blush-500";
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -71,25 +69,20 @@ function ResetForm() {
         sub="Use at least 8 characters. You'll sign in with it on your phone and laptop."
       />
       <form onSubmit={submit} className="rounded-[1.5rem] border border-blush-100 bg-white p-6">
-        <input
+        <PasswordField
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-          type="password"
           minLength={8}
           autoComplete="new-password"
           placeholder="New password (8+ characters)"
-          className={inputCls}
         />
-        <input
+        <PasswordField
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
-          required
-          type="password"
           minLength={8}
           autoComplete="new-password"
           placeholder="Type it again"
-          className={`${inputCls} mt-3`}
+          className="mt-3"
         />
         {error && (
           <p className="mt-3 rounded-2xl bg-red-50 p-3 text-sm font-bold text-red-700">

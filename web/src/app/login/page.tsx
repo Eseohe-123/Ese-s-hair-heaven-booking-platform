@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { SectionHeading } from "@/components/SectionHeading";
+import { PasswordField } from "@/components/PasswordField";
 
 export default function LoginPage() {
   return (
@@ -81,9 +82,13 @@ function LoginForm() {
           value={email} onChange={(e) => setEmail(e.target.value)} required type="email"
           placeholder="Email" className={`${inputCls} mt-3`}
         />
-        <input
-          value={password} onChange={(e) => setPassword(e.target.value)} required
-          type="password" minLength={8} placeholder="Password (8+ characters)" className={`${inputCls} mt-3`}
+        <PasswordField
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={8}
+          autoComplete={mode === "up" ? "new-password" : "current-password"}
+          placeholder="Password (8+ characters)"
+          className="mt-3"
         />
         {mode === "in" && (
           <p className="mt-2 text-right text-xs">
